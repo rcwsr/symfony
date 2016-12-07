@@ -267,6 +267,40 @@ class DateTimeToLocalizedStringTransformerTest extends DateTimeTestCase
         );
     }
 
+    public function testReverseTransformDateWithTime()
+    {
+        $transformer = new DateTimeToLocalizedStringTransformer(
+            'UTC',
+            'America/Louisville',
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::GREGORIAN,
+            "yyyy-MM-dd HH:mm:ss"
+        );
+
+        $this->assertDateTimeEquals(
+            new \DateTime('2015-01-01T05:00:00+00:00', new \DateTimeZone('UTC')),
+            $transformer->reverseTransform('2015-01-01 00:00:00')
+        );
+    }
+
+    public function testReverseTransformDateWithoutTime()
+    {
+        $transformer = new DateTimeToLocalizedStringTransformer(
+            'UTC',
+            'America/Louisville',
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::GREGORIAN,
+            "yyyy-MM-dd"
+        );
+
+        $this->assertDateTimeEquals(
+            new \DateTime('2015-01-01T05:00:00+00:00', new \DateTimeZone('UTC')),
+            $transformer->reverseTransform('2015-01-01')
+        );
+    }
+
     public function testReverseTransformEmpty()
     {
         $transformer = new DateTimeToLocalizedStringTransformer();
